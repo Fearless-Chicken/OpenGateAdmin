@@ -29,41 +29,30 @@
         private void InitializeComponent()
         {
             PannelLogin = new Panel();
-            login1 = new OpenGate.UC.Login();
-            PannelLogin.SuspendLayout();
             SuspendLayout();
             // 
             // PannelLogin
             // 
-            PannelLogin.Controls.Add(login1);
             PannelLogin.Location = new Point(0, 0);
             PannelLogin.Name = "PannelLogin";
             PannelLogin.Size = new Size(298, 186);
             PannelLogin.TabIndex = 1;
             // 
-            // login1
-            // 
-            login1.Location = new Point(0, 0);
-            login1.Name = "login1";
-            login1.Size = new Size(310, 187);
-            login1.TabIndex = 2;
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(629, 348);
+            ClientSize = new Size(566, 310);
             Controls.Add(PannelLogin);
             Name = "Main";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Open Gate Admin";
-            PannelLogin.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         public Panel PannelLogin;
-        private UC.Login login1;
+        private UC.Register register1;
     }
 }

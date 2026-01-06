@@ -90,6 +90,7 @@
             But_Login.TabIndex = 5;
             But_Login.Text = "Connexion";
             But_Login.UseVisualStyleBackColor = true;
+            But_Login.Click += But_Login_Click;
             // 
             // StayLogin
             // 

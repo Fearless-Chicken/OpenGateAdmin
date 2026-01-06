@@ -32,7 +32,7 @@ namespace OpenGate
                 splash.Close();
 
                 // On lance l'application
-                Application.Run(new Main());
+                Application.Run(new Main(conn));
             }
             catch (Exception ex)
             {

@@ -7,19 +7,20 @@ using System.Drawing;
 using System.Resources;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.Data.SqlClient;
 
 namespace OpenGate
 {
     public partial class Main : Form
     {
-        public Main()
+        public Main(SqlConnection conn)
         {
             InitializeComponent();
             // 1. Créer une instance de votre UserControl
             if (isStayLogin())
             {
                 Resize_Window("Login");
-                Login monUC = new Login();
+                Login monUC = new Login(conn);
                 monUC.Dock = DockStyle.Fill;
                 PannelLogin.Controls.Clear();
                 PannelLogin.Controls.Add(monUC);

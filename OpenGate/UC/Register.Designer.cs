@@ -99,6 +99,7 @@
             But_Register.TabIndex = 12;
             But_Register.Text = "Créer utilisateur";
             But_Register.UseVisualStyleBackColor = true;
+            But_Register.Click += But_Register_Click;
             // 
             // Register
             // 
