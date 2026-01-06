@@ -37,8 +37,6 @@
             StayLogin = new CheckBox();
             But_Register = new Button();
             AddNewUser = new LinkLabel();
-            textBox1 = new TextBox();
-            lab_A_Token = new Label();
             SuspendLayout();
             // 
             // MainTitle
@@ -98,7 +96,7 @@
             // StayLogin
             // 
             StayLogin.AutoSize = true;
-            StayLogin.Location = new Point(132, 177);
+            StayLogin.Location = new Point(132, 152);
             StayLogin.Name = "StayLogin";
             StayLogin.Size = new Size(148, 19);
             StayLogin.TabIndex = 11;
@@ -107,7 +105,7 @@
             // 
             // But_Register
             // 
-            But_Register.Location = new Point(74, 202);
+            But_Register.Location = new Point(74, 177);
             But_Register.Name = "But_Register";
             But_Register.Size = new Size(160, 34);
             But_Register.TabIndex = 12;
@@ -117,7 +115,7 @@
             // AddNewUser
             // 
             AddNewUser.AutoSize = true;
-            AddNewUser.Location = new Point(51, 178);
+            AddNewUser.Location = new Point(51, 153);
             AddNewUser.Name = "AddNewUser";
             AddNewUser.Size = new Size(75, 15);
             AddNewUser.TabIndex = 13;
@@ -125,30 +123,10 @@
             AddNewUser.Text = "Se connecter";
             AddNewUser.LinkClicked += AddNewUser_LinkClicked;
             // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(123, 145);
-            textBox1.Name = "textBox1";
-            textBox1.PasswordChar = '*';
-            textBox1.PlaceholderText = "Token";
-            textBox1.Size = new Size(169, 23);
-            textBox1.TabIndex = 15;
-            // 
-            // lab_A_Token
-            // 
-            lab_A_Token.AutoSize = true;
-            lab_A_Token.Location = new Point(18, 146);
-            lab_A_Token.Name = "lab_A_Token";
-            lab_A_Token.Size = new Size(76, 15);
-            lab_A_Token.TabIndex = 14;
-            lab_A_Token.Text = "Token admin";
-            // 
             // Register
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(textBox1);
-            Controls.Add(lab_A_Token);
             Controls.Add(AddNewUser);
             Controls.Add(But_Register);
             Controls.Add(StayLogin);
@@ -159,7 +137,7 @@
             Controls.Add(Lab_Username);
             Controls.Add(MainTitle);
             Name = "Register";
-            Size = new Size(326, 250);
+            Size = new Size(326, 222);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -175,7 +153,5 @@
         private CheckBox StayLogin;
         private Button But_Register;
         private LinkLabel AddNewUser;
-        private TextBox textBox1;
-        private Label lab_A_Token;
     }
 }
