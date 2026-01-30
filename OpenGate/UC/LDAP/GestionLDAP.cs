@@ -93,13 +93,33 @@ namespace OpenGate.UC.LDAP
                 config.Port
             );
 
-            var credential = new NetworkCredential(
-                config.BindDn,
-                config.Password
-            );
+            LdapConnection connection;
 
-            using var connection = new LdapConnection(identifier, credential);
-            connection.Bind(); // exception si erreur
+            if (!string.IsNullOrWhiteSpace(config.BindDn) && !string.IsNullOrWhiteSpace(config.Password))
+            {
+                // Utilisation des credentials si fournis
+                var credential = new NetworkCredential(config.BindDn, config.Password);
+                connection = new LdapConnection(identifier, credential);
+            }
+            else
+            {
+                // Connexion anonyme si BindDn et Password vides
+                connection = new LdapConnection(identifier);
+            }
+
+            connection.Bind();
+            if (!string.IsNullOrWhiteSpace(config.BaseDn))
+            {
+                var request = new SearchRequest(
+                    config.BaseDn,
+                    "(objectClass=*)",   // simple filtre pour vérifier l'existence
+                    SearchScope.Base,
+                    null
+                );
+
+                var response = (SearchResponse)connection.SendRequest(request);
+                // exception si Base DN invalide
+            }
         }
 
         // Bouton TEST

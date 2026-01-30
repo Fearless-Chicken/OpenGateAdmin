@@ -18,16 +18,11 @@ namespace OpenGate
             DatabaseConnection db = new DatabaseConnection();
 
             // 2. On utilise SqlConnection (et non MySqlConnection)
-            SqlConnection conn = db.GetConnection();
+            SqlConnection conn = db.CreateConnection();
 
             try
             {
-                if (conn == null)
-                {
-                    throw new Exception("La configuration de la connexion a échoué (vérifiez vos accès SSMS).");
-                }
-
-                // La connexion est déjà ouverte par ta méthode db.GetConnection()
+                conn.Open();
 
                 splash.Close();
 
@@ -41,12 +36,12 @@ namespace OpenGate
                 MessageBox.Show("Impossible de se connecter à la base de données :\n" + ex.Message,
                                 "Erreur Critique", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                // On ferme proprement si c'est resté ouvert
-                if (conn != null && conn.State == System.Data.ConnectionState.Open)
-                    conn.Close();
-            }
+            //finally
+            //{
+            //    // On ferme proprement si c'est resté ouvert
+            //    if (conn != null && conn.State == System.Data.ConnectionState.Open)
+            //        conn.Close();
+            //}
         }
     }
 }
