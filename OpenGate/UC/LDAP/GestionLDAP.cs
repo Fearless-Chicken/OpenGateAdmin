@@ -20,6 +20,8 @@ namespace OpenGate.UC.LDAP
         {
             InitializeComponent();
 
+            LoadSettings();
+
             // État initial : tout désactivé
             SetControlsEnabled(stateLDAP.Checked);
 
@@ -40,6 +42,18 @@ namespace OpenGate.UC.LDAP
             public required string Password { get; set; }
             public string? UserFilter { get; set; }
             public bool UseSSL { get; set; }
+        }
+
+        private void LoadSettings()
+        {
+            stateLDAP.Checked = Properties.Settings.Default.LdapStatus;
+            txtServer.Text = Properties.Settings.Default.LdapServer;
+            txtPort.Text = Properties.Settings.Default.LdapPort.ToString();
+            txtDN.Text = Properties.Settings.Default.LdapBindDn;
+            txtMDP.Text = Properties.Settings.Default.LdapPassword;
+            txtBaseDN.Text = Properties.Settings.Default.LdapBaseDn;
+            txtUserFilter.Text = Properties.Settings.Default.LdapFilter;
+            stateSSL.Checked = Properties.Settings.Default.LdapUseSSL;
         }
 
         // Lecture UI
@@ -147,12 +161,16 @@ namespace OpenGate.UC.LDAP
             {
                 var config = ReadForm();
 
-                var json = JsonSerializer.Serialize(
-                    config,
-                    new JsonSerializerOptions { WriteIndented = true }
-                );
+                Properties.Settings.Default.LdapStatus = stateLDAP.Checked;
+                Properties.Settings.Default.LdapServer = config.Server;
+                Properties.Settings.Default.LdapPort = config.Port;
+                Properties.Settings.Default.LdapBindDn = config.BindDn;
+                Properties.Settings.Default.LdapPassword = config.Password;
+                Properties.Settings.Default.LdapBaseDn = config.BaseDn;
+                Properties.Settings.Default.LdapFilter = config.UserFilter;
+                Properties.Settings.Default.LdapUseSSL = config.UseSSL;
 
-                File.WriteAllText("ldap-config.json", json);
+                Properties.Settings.Default.Save();
 
                 MessageBox.Show(
                     "Configuration LDAP enregistrée 💾",

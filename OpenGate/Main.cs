@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using MySqlX.XDevAPI.Common;
 using OpenGate.UC;
 using System;
 using System.Data;
@@ -18,21 +19,7 @@ namespace OpenGate
             // On stocke la connexion dans la variable de classe pour la réutiliser partout
             _conn = conn;
 
-            // Logique de démarrage : si le token existe, on va au Dashboard, sinon au Login
-            if (isAlrLogin())
-            {
-                StartUp("none");
-            }
-            else
-            {
-                showLogin(_conn);
-            }
-        }
-
-        private bool isAlrLogin()
-        {
-            // Renvoie true seulement si le token N'EST PAS vide
-            return !string.IsNullOrWhiteSpace(Properties.Settings.Default.UserToken);
+            showLogin(_conn);
         }
 
         public void LockWindow()
@@ -84,7 +71,7 @@ namespace OpenGate
             catch { /* Gérer l'erreur si la ressource 'Type' n'existe pas */ }
         }
 
-        public void StartUp(string token)
+        public void StartUp(string username)
         {
             DelockWindow();
             PannelOptions.Visible = false;
@@ -92,40 +79,8 @@ namespace OpenGate
             ClearPanel();
             Resize_Window("Default");
 
+            Label_UserName.Text = username;
 
-            // Récupération du nom d'utilisateur via le Token
-            string sql = "SELECT username FROM [PTUT].[dbo].[OGA_Users] WHERE token = @token";
-
-            try
-            {
-                if (_conn.State != ConnectionState.Open) _conn.Open();
-
-                using (SqlCommand cmd = new SqlCommand(sql, _conn))
-                {
-                    if (token == "none")
-                    {
-                        token = Properties.Settings.Default.UserToken;
-                    }
-
-                    cmd.Parameters.AddWithValue("@token", token);
-
-                    object result = cmd.ExecuteScalar();
-
-                    if (result != null)
-                    {
-                        Label_UserName.Text = result.ToString();
-                    }
-                    else
-                    {
-                        // Si le token est invalide en BDD, on déconnecte
-                        LogOut();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erreur SQL StartUp : " + ex.Message);
-            }
         }
 
         public void HomePage()
@@ -144,8 +99,6 @@ namespace OpenGate
 
         private void LogOut()
         {
-            Properties.Settings.Default.UserToken = "";
-            Properties.Settings.Default.Save();
             showLogin(_conn);
         }
 

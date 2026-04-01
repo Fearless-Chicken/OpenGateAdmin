@@ -1,7 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
+using System.Net;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.DirectoryServices.Protocols;
 
 namespace OpenGate.UC
 {
@@ -13,6 +16,8 @@ namespace OpenGate.UC
         {
             InitializeComponent();
             _conn = conn;
+
+            AuthMode.SelectedItem = "BDD";
         }
 
         private void But_Login_Click(object sender, EventArgs e)
@@ -27,7 +32,6 @@ namespace OpenGate.UC
             }
 
             string sql = "SELECT passwd FROM [PTUT].[dbo].[OGA_Users] WHERE username = @user";
-            string token = "none";
             try
             {
                 if (_conn.State != ConnectionState.Open) _conn.Open();
@@ -44,16 +48,11 @@ namespace OpenGate.UC
                         // Vérification du mot de passe avec ton utilitaire BCrypt
                         if (Utils.HashUtils.verifyPASSWD(passwd, dbHash))
                         {
-                            // Si "Rester connecté" est coché, on récupère le token
-                            if (StayLogin.Checked)
-                            {
-                                token = SaveUserToken(username);
-                            }
 
                             // Redirection vers le StartUp de la fenêtre Main
                             if (this.FindForm() is Main maFenetre)
                             {
-                                maFenetre.StartUp(token);
+                                maFenetre.StartUp(username);
                             }
                         }
                         else
@@ -92,6 +91,41 @@ namespace OpenGate.UC
             }
 
             return string.Empty;
+        }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+    }
+
+    public class LDAPlogin
+    {
+        public static bool Authenticate(string username, string password)
+        {
+                try
+            {
+                string ldapServer = "ldaps://ton-dc:636"; // ⚠️ à adapter
+            string domain = "TONDOMAINE"; // ex: MYDOMAIN
+
+            var credential = new NetworkCredential($"{domain}\\{username}", password);
+
+                using (var connection = new LdapConnection(ldapServer))
+                {
+                    connection.Credential = credential;
+                    connection.AuthType = AuthType.Negotiate;
+                    connection.SessionOptions.SecureSocketLayer = true;
+
+                    connection.Bind();
+
+                    return true;
+                }
+            }
+            catch
+            {
+            return false;
+            }
         }
     }
 }
